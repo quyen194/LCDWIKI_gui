@@ -494,13 +494,19 @@ void LCDWIKI_GUI::Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color,
 }
 
 // print string
-size_t LCDWIKI_GUI::Print(uint8_t *st, int16_t x, int16_t y) {
+size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, uint8_t *st,
+                          bool read_from_flash) {
   int16_t pos;
   uint16_t len;
   const char *p = (const char *)st;
   size_t n = 0;
   if (x == CENTER || x == RIGHT) {
-    len = strlen((const char *)st) * 6 * text_size;
+    if (!read_from_flash) {
+      len = strlen((const char *)st) * 6 * text_size;
+    }
+    else {
+      len = strlen_P((const char *)st) * 6 * text_size;
+    }
     pos = (Get_Display_Width() - len);
     if (x == CENTER) {
       x = pos / 2;
@@ -510,7 +516,7 @@ size_t LCDWIKI_GUI::Print(uint8_t *st, int16_t x, int16_t y) {
   }
   Set_Text_Cousur(x, y);
   while (1) {
-    unsigned char ch = *(p++);  // pgm_read_byte(p++);
+    unsigned char ch = !read_from_flash ? *(p++) : pgm_read_byte(p++);
     if (ch == 0) {
       break;
     }
@@ -524,18 +530,23 @@ size_t LCDWIKI_GUI::Print(uint8_t *st, int16_t x, int16_t y) {
 }
 
 // print string
-void LCDWIKI_GUI::Print_String(const uint8_t *st, int16_t x, int16_t y) {
-  Print((uint8_t *)st, x, y);
+void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, const char *st) {
+  Print(x, y, (uint8_t *)st);
 }
 
 // print string
-void LCDWIKI_GUI::Print_String(uint8_t *st, int16_t x, int16_t y) {
-  Print(st, x, y);
+void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, char *st) {
+  Print(x, y, (uint8_t *)st);
 }
 
 // print string
-void LCDWIKI_GUI::Print_String(String st, int16_t x, int16_t y) {
-  Print((uint8_t *)(st.c_str()), x, y);
+void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, String st) {
+  Print(x, y, (uint8_t *)(st.c_str()));
+}
+
+void LCDWIKI_GUI::Print_String(int16_t x, int16_t y,
+                               const __FlashStringHelper *st) {
+  Print(x, y, (uint8_t *)st, true);
 }
 
 // print int number
