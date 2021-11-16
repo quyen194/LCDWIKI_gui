@@ -455,6 +455,10 @@ void LCDWIKI_GUI::Set_Text_Mode(boolean mode) { text_mode = mode; }
 // get text mode
 boolean LCDWIKI_GUI::Get_Text_Mode(void) const { return text_mode; }
 
+void LCDWIKI_GUI::Draw_Char(int16_t x, int16_t y, uint8_t c) {
+  Draw_Char(x, y, c, text_color, text_bgcolor, text_size, text_mode);
+}
+
 // draw a char
 void LCDWIKI_GUI::Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color,
                             uint16_t bg, uint8_t size, boolean mode) {

@@ -94,6 +94,7 @@ class LCDWIKI_GUI {
                         uint8_t filler, int16_t system);
   void Print_Number_Float(double num, uint8_t dec, int16_t x, int16_t y,
                           uint8_t divider, int16_t length, uint8_t filler);
+  void Draw_Char(int16_t x, int16_t y, uint8_t c);
   void Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color, uint16_t bg,
                  uint8_t size, boolean mode);
   size_t write(uint8_t c);
