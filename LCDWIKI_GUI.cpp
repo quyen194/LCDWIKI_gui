@@ -21,7 +21,7 @@ MIT License
 
 #include "LCDWIKI_GUI.h"
 
-#include "LCDWIKI_font.c"
+#include "LCDWIKI_font.h"
 
 #define swap(a, b) \
   {                \
@@ -584,7 +584,7 @@ void LCDWIKI_GUI::Print_Number_Int(long num, int16_t x, int16_t y,
     *(--p) = '-';
   }
   if (length > (len + flag + 1)) {
-    if (length > sizeof(st)) {
+    if (length > (int16_t)sizeof(st)) {
       nlen = sizeof(st) - len - flag - 1;
     } else {
       nlen = length - len - flag - 1;
@@ -596,11 +596,11 @@ void LCDWIKI_GUI::Print_Number_Int(long num, int16_t x, int16_t y,
   } else {
     left_len = sizeof(st) - len - flag - 1;
   }
-  for (i = 0; i < (sizeof(st) - left_len); i++) {
+  for (i = 0; i < ((int16_t)sizeof(st) - left_len); i++) {
     st[i] = st[left_len + i];
   }
   st[i] = '\0';
-  Print(st, x, y);
+  Print(x, y, st);
 }
 
 // print float number
@@ -621,7 +621,7 @@ void LCDWIKI_GUI::Print_Number_Float(double num, uint8_t dec, int16_t x,
   }
   dtostrf(num, length, dec, (char *)st);
   if (divider != '.') {
-    while (i < sizeof(st)) {
+    while (i < (int16_t)sizeof(st)) {
       if ('.' == *(p + i)) {
         *(p + i) = divider;
       }
@@ -632,7 +632,7 @@ void LCDWIKI_GUI::Print_Number_Float(double num, uint8_t dec, int16_t x,
     if (flag) {
       *p = '-';
       i = 1;
-      while (i < sizeof(st)) {
+      while (i < (int16_t)sizeof(st)) {
         if ((*(p + i) == ' ') || (*(p + i) == '-')) {
           *(p + i) = filler;
         }
@@ -640,14 +640,14 @@ void LCDWIKI_GUI::Print_Number_Float(double num, uint8_t dec, int16_t x,
       }
     } else {
       i = 0;
-      while (i < sizeof(st)) {
+      while (i < (int16_t)sizeof(st)) {
         if (' ' == *(p + i)) {
           *(p + i) = filler;
         }
       }
     }
   }
-  Print(st, x, y);
+  Print(x, y, st);
 }
 
 // write a char
