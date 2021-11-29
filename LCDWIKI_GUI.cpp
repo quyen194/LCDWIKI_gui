@@ -498,7 +498,7 @@ void LCDWIKI_GUI::Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color,
 }
 
 // print string
-size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, uint8_t *st,
+size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st,
                           bool read_from_flash) {
   int16_t pos;
   uint16_t len;
@@ -543,22 +543,21 @@ size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, uint8_t *st,
 
 // print string
 void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, const char *st) {
-  Print(x, y, (uint8_t *)st);
+  Print(x, y, st);
 }
 
 // print string
 void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, char *st) {
-  Print(x, y, (uint8_t *)st);
+  Print(x, y, st);
 }
 
 // print string
-void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, String st) {
-  Print(x, y, (uint8_t *)(st.c_str()));
-}
+// void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, String st) {
+//   Print(x, y, st.c_str());
+// }
 
-void LCDWIKI_GUI::Print_String(int16_t x, int16_t y,
-                               const __FlashStringHelper *st) {
-  Print(x, y, (uint8_t *)st, true);
+void LCDWIKI_GUI::Print_String_P(int16_t x, int16_t y, const char *st) {
+  Print(x, y, st, true);
 }
 
 // print int number
