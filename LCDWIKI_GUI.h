@@ -21,6 +21,10 @@
 //#include <avr/dtostrf.h>
 //#endif
 
+#define TOP 0
+#define BOTTOM 9999
+#define MIDDLE 9998
+
 #define LEFT 0
 #define RIGHT 9999
 #define CENTER 9998

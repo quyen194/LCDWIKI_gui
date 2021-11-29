@@ -518,6 +518,14 @@ size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, uint8_t *st,
       x = pos - 1;
     }
   }
+  if (y == MIDDLE || y == BOTTOM) {
+    pos = (Get_Display_Height() - (10 * text_size));
+    if (y == MIDDLE) {
+      y = pos / 2;
+    } else {
+      y = pos;
+    }
+  }
   Set_Text_Cousur(x, y);
   while (1) {
     unsigned char ch = !read_from_flash ? *(p++) : pgm_read_byte(p++);
@@ -653,7 +661,7 @@ void LCDWIKI_GUI::Print_Number_Float(double num, uint8_t dec, int16_t x,
 // write a char
 size_t LCDWIKI_GUI::write(uint8_t c) {
   if (c == '\n') {
-    text_y += text_size * 8;
+    text_y += text_size * 10;
     text_x = 0;
   } else if (c == '\r') {
   } else {
