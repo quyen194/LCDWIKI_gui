@@ -87,6 +87,12 @@ void LCDWIKI_GUI::Draw_Fast_HLine(int16_t x, int16_t y, int16_t w) {
   Fill_Rect(x, y, w, 1, draw_color);
 }
 
+// Fill screen area with color
+void LCDWIKI_GUI::Fill_Screen(int16_t x, int16_t y, int16_t w, int16_t h,
+                              uint16_t color) {
+  Fill_Rect(x, y, w, h, color);
+}
+
 // Fill the full screen with color
 void LCDWIKI_GUI::Fill_Screen(uint16_t color) {
   Fill_Rect(0, 0, Get_Width(), Get_Height(), color);

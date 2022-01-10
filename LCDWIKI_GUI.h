@@ -55,6 +55,7 @@ class LCDWIKI_GUI {
   uint16_t Read_Pixel(int16_t x, int16_t y);
   void Draw_Fast_VLine(int16_t x, int16_t y, int16_t h);
   void Draw_Fast_HLine(int16_t x, int16_t y, int16_t w);
+  void Fill_Screen(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
   void Fill_Screen(uint16_t color);
   void Fill_Screen(uint8_t r, uint8_t g, uint8_t b);
   void Draw_Line(int16_t x1, int16_t y1, int16_t x2, int16_t y2);
