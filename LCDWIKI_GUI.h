@@ -77,7 +77,7 @@ class LCDWIKI_GUI {
                      int16_t y2);
   void Draw_Bit_Map(int16_t x, int16_t y, int16_t sx, int16_t sy,
                     const uint16_t *data, int16_t scale);
-  void Set_Text_Cousur(int16_t x, int16_t y);
+  void Set_Text_Cursor(int16_t x, int16_t y);
   int16_t Get_Text_X_Cousur(void) const;
   int16_t Get_Text_Y_Cousur(void) const;
   void Set_Text_colour(uint16_t color);
@@ -90,8 +90,8 @@ class LCDWIKI_GUI {
   uint8_t Get_Text_Size(void) const;
   void Set_Text_Mode(boolean mode);
   boolean Get_Text_Mode(void) const;
-  size_t Print(int16_t x, int16_t y, const void *st,
-               bool read_from_flash = false);
+  uint16_t Print(int16_t x, int16_t y, const void *st, int16_t length,
+                 bool read_from_flash);
   void Print_String(int16_t x, int16_t y, const char *st);
   void Print_String(int16_t x, int16_t y, char *st);
   void Print_String_P(int16_t x, int16_t y, const char *st);
@@ -103,7 +103,7 @@ class LCDWIKI_GUI {
   void Draw_Char(int16_t x, int16_t y, uint8_t c);
   void Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color, uint16_t bg,
                  uint8_t size, boolean mode);
-  size_t write(uint8_t c);
+  uint8_t write(uint8_t c);
   int16_t Get_Display_Width(void) const;
   int16_t Get_Display_Height(void) const;
 

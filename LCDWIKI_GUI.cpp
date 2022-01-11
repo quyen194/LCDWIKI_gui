@@ -416,7 +416,7 @@ void LCDWIKI_GUI::Draw_Bit_Map(int16_t x, int16_t y, int16_t sx, int16_t sy,
 }
 
 // set text coordinate
-void LCDWIKI_GUI::Set_Text_Cousur(int16_t x, int16_t y) {
+void LCDWIKI_GUI::Set_Text_Cursor(int16_t x, int16_t y) {
   text_x = x;
   text_y = y;
 }
@@ -504,23 +504,23 @@ void LCDWIKI_GUI::Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color,
 }
 
 // print string
-size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st,
+size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st, int16_t length,
                           bool read_from_flash) {
   int16_t pos;
-  uint16_t len;
-  const char *p = (const char *)st;
-  size_t n = 0;
+  const char *p = reinterpret_cast<const char *>(st);
   if (x == CENTER || x == RIGHT) {
-    if (!read_from_flash) {
-      len = strlen((const char *)st) * 6 * text_size;
+    uint16_t len = (!read_from_flash) ? strlen(p) : strlen_P(p);
+    if (length >= 0 && static_cast<uint16_t>(length) < len) {
+      len = static_cast<uint16_t>(length);
     }
-    else {
-      len = strlen_P((const char *)st) * 6 * text_size;
-    }
+
+    len *= 6 * text_size;
+
     pos = (Get_Display_Width() - len);
     if (x == CENTER) {
       x = pos / 2;
-    } else {
+    }
+    else {
       x = pos - 1;
     }
   }
@@ -532,15 +532,17 @@ size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st,
       y = pos;
     }
   }
-  Set_Text_Cousur(x, y);
-  while (1) {
+  Set_Text_Cursor(x, y);
+  uint16_t n = 0;
+  while (length < 0 || n < static_cast<uint16_t>(length)) {
     unsigned char ch = !read_from_flash ? *(p++) : pgm_read_byte(p++);
     if (ch == 0) {
       break;
     }
     if (write(ch)) {
       n++;
-    } else {
+    }
+    else {
       break;
     }
   }
@@ -549,12 +551,12 @@ size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st,
 
 // print string
 void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, const char *st) {
-  Print(x, y, st);
+  Print(x, y, st, -1, false);
 }
 
 // print string
 void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, char *st) {
-  Print(x, y, st);
+  Print(x, y, st, -1, false);
 }
 
 // print string
@@ -563,7 +565,7 @@ void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, char *st) {
 // }
 
 void LCDWIKI_GUI::Print_String_P(int16_t x, int16_t y, const char *st) {
-  Print(x, y, st, true);
+  Print(x, y, st, -1, true);
 }
 
 // print int number
@@ -613,7 +615,7 @@ void LCDWIKI_GUI::Print_Number_Int(long num, int16_t x, int16_t y,
     st[i] = st[left_len + i];
   }
   st[i] = '\0';
-  Print(x, y, st);
+  Print(x, y, st, -1, false);
 }
 
 // print float number
@@ -660,11 +662,11 @@ void LCDWIKI_GUI::Print_Number_Float(double num, uint8_t dec, int16_t x,
       }
     }
   }
-  Print(x, y, st);
+  Print(x, y, st, -1, false);
 }
 
 // write a char
-size_t LCDWIKI_GUI::write(uint8_t c) {
+uint8_t LCDWIKI_GUI::write(uint8_t c) {
   if (c == '\n') {
     text_y += text_size * 10;
     text_x = 0;
