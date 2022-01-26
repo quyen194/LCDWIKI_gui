@@ -668,7 +668,7 @@ void LCDWIKI_GUI::Print_Number_Float(double num, uint8_t dec, int16_t x,
 // write a char
 uint8_t LCDWIKI_GUI::write(uint8_t c) {
   if (c == '\n') {
-    text_y += text_size * 10;
+    text_y += text_size * 8;
     text_x = 0;
   } else if (c == '\r') {
   } else {
