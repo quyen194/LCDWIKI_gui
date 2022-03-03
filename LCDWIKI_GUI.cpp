@@ -504,8 +504,9 @@ void LCDWIKI_GUI::Draw_Char(int16_t x, int16_t y, uint8_t c, uint16_t color,
 }
 
 // print string
+// character_case: 0: none - 1: lower - 2: upper
 size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st, int16_t length,
-                          bool read_from_flash) {
+                          bool read_from_flash, uint8_t character_case) {
   int16_t pos;
   const char *p = reinterpret_cast<const char *>(st);
   if (x == CENTER || x == RIGHT) {
@@ -539,6 +540,20 @@ size_t LCDWIKI_GUI::Print(int16_t x, int16_t y, const void *st, int16_t length,
     if (ch == 0) {
       break;
     }
+    if (character_case == 1) {
+      // set bit 5 only for alphas => to convert to lower case
+      char c = static_cast<char>(ch | 0x20);
+      if ((c >= 'a') && (c <= 'z')) {
+        ch = static_cast<unsigned char>(c);
+      }
+    }
+    else if (character_case == 2) {
+      // clear bit 5 only for alphas => to convert to upper case
+      char c = static_cast<char>(ch & 0xDF);
+      if ((c >= 'A') && (c <= 'Z')) {
+        ch = static_cast<unsigned char>(c);
+      }
+    }
     if (write(ch)) {
       n++;
     }
@@ -566,6 +581,14 @@ void LCDWIKI_GUI::Print_String(int16_t x, int16_t y, char *st) {
 
 void LCDWIKI_GUI::Print_String_P(int16_t x, int16_t y, const char *st) {
   Print(x, y, st, -1, true);
+}
+
+void LCDWIKI_GUI::Print_String_PL(int16_t x, int16_t y, const char *st) {
+  Print(x, y, st, -1, true, 1);
+}
+
+void LCDWIKI_GUI::Print_String_PU(int16_t x, int16_t y, const char *st) {
+  Print(x, y, st, -1, true, 2);
 }
 
 // print int number

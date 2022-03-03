@@ -91,10 +91,12 @@ class LCDWIKI_GUI {
   void Set_Text_Mode(boolean mode);
   boolean Get_Text_Mode(void) const;
   uint16_t Print(int16_t x, int16_t y, const void *st, int16_t length,
-                 bool read_from_flash);
+                 bool read_from_flash, uint8_t character_case = 0);
   void Print_String(int16_t x, int16_t y, const char *st);
   void Print_String(int16_t x, int16_t y, char *st);
   void Print_String_P(int16_t x, int16_t y, const char *st);
+  void Print_String_PL(int16_t x, int16_t y, const char *st);
+  void Print_String_PU(int16_t x, int16_t y, const char *st);
   // void Print_String(int16_t x, int16_t y, String st);
   void Print_Number_Int(long num, int16_t x, int16_t y, int16_t length,
                         uint8_t filler, int16_t system);
